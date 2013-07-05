@@ -64,8 +64,7 @@ var buildfn = function(checkfile) {
         if (result instanceof Error) {
             console.error('Error: ' + util.format(response.message));
         } else if (response.statusCode != 200) {
-                console.error('Page not available, response status code: ' + 
-                    response.statusCode);
+            console.error('Page not available, response status code: ' + response.statusCode);
         } else {
             var checks = loadChecks(checkfile).sort();
             var file = cheerio.load(result);
@@ -75,7 +74,7 @@ var buildfn = function(checkfile) {
               out[checks[ii]] = present;
             }
             var outJson = JSON.stringify(out, null, 4);
-            console.log(outJson);
+            console.log(outJson)
         }
     };
     return response2buf;
@@ -98,12 +97,12 @@ if(require.main == module) {
         .option('-u, --url <URL>', 'URL of index.html', null , URL_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
         .parse(process.argv);
-    if (program.url == URL_DEFAULT) {
-        checkHtmlURL(program.url, program.checks);
+    if (program.url != null) {
+        var checkJson = checkHtmlURL(program.url, program.checks);
     } else {
         var checkJson = checkHtmlFile(program.file, program.checks);
         var outJson = JSON.stringify(checkJson, null, 4);
-        console.log(outJson);
+        console.log(outJson)
     }
 } else {
     exports.checkHtmlFile = checkHtmlFile;
